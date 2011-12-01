@@ -64,11 +64,11 @@ case $1 in
     # (Don't match against -config tools e.g. /usr/bin/python2.6-config)
     grep "/usr/bin/python.\..$" $tmpfile \
             | sed -e "s|.*/usr/bin/python\(.\..\)|python(abi) = \1|"
-    # Optimisation: the rest of the script works with egg-infos
-    grep -qs '\.egg-info' $tmpfile || exit 0
+
     pyver=`grep "/usr/lib[^/]*/python.\../.*" $tmpfile \
                 | sed -e "s|.*/usr/lib[^/]*/python\(.\..\)/.*|\1|g" \
                 | sort | uniq`
+
     # distutils-based
     grep "/usr/lib[^/]*/python[^/]*/.*\.egg-info$" $tmpfile \
             | while read egginfo; do
@@ -103,6 +103,7 @@ case $1 in
         fi
         echo "python$pyver($module_name) $module_version"
     done
+
     exit 0
     ;;
 -R|--requires)
@@ -134,6 +135,7 @@ case $1 in
             | while read reqinfo; do
         [ -f "$reqinfo" ] && pyrequires_setuptools "$reqinfo"
     done
+    #TODO: Python importable module requires
     exit 0
     ;;
 esac
