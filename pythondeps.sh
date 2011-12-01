@@ -86,7 +86,7 @@ case $1 in
             | while read abspyfile; do
         # Check for PEP-396 module version (if any):
         module_version=""
-        version=`grep "__version__" $abspyfile | cut -d " " -f 3`
+        version=`grep "^__version__" $abspyfile | cut -d " " -f 3`
         if [ -n "$version" ]; then
             version=${version:1:$((${#version} - 2))} # Transform '0.5' or "0.5" into 0.5...
             module_version="= $version"
